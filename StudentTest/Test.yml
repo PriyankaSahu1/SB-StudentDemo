@@ -1,6 +1,6 @@
 ---
  - name: Configure in Remote Hosts
-   hosts: remotehosts
+   hosts: hostserver
    gather_facts: true
    become: yes
    vars:
