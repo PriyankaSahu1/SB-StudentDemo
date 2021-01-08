@@ -46,7 +46,7 @@ pipeline{
 	    }
 	  stage('ansible-deploy'){
 	      steps{
-	          echo "ansible"
+	          ansiblePlaybook credentialsId: 'ansible-privateKey', disableHostKeyChecking: true, installation: 'ansible', inventory: 'StudentTest/dev.inv', playbook: 'StudentTest/Test.yml'
 	      }
 	  }
 	    
