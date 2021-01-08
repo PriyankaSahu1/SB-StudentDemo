@@ -1,42 +1,36 @@
 pipeline{
     agent any
 	
+	stages{
 	  stage('Compile Stage'){
 			steps{
 				
 					sh '''
-          cd StudentTest
+          cd StudentHandson
           mvn compile 
     '''
 		    }
 	    }
-	     stage('Junit test Stage'){
-			steps{
-				
-				echo "juint"
-		    }
-	    }
+	    
 	    stage('QA test Stage'){
 			steps{
-				
 					sh '''
-          cd StudentTest
+          cd StudentHandson
           mvn clean test package sonar:sonar
     '''
+				}
+		    }
+		     stage('Junit test Stage'){
+			steps{
+				
+				junit 'StudentHandson/target/surefire-reports/*.xml'
 		    }
 	    }
 	  stage('ansible-deploy'){
 	      steps{
-	         ansiblePlaybook credentialsId: 'ansible-privateKey', disableHostKeyChecking: true, installation: 'ansible', inventory: 'StudentTest/dev.inv', playbook: 'StudentTest/Test.yml'
+	          ansiblePlaybook credentialsId: 'ansible-privateKey', disableHostKeyChecking: true, installation: 'ansible', inventory: 'StudentTest/dev.inv', playbook: 'StudentTest/Test.yml'
 	      }
-	     
 	  }
 	    
 	}
-	 post{
-	  	always{
-	  	 	junit 'StudentTest/target/surefire-reports/*.xml'
-	  	 }
-	  	}
-	 
 }
