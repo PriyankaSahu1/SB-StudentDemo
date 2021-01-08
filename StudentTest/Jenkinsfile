@@ -6,7 +6,7 @@ pipeline{
 			steps{
 				
 					sh '''
-          cd StudentHandson
+          cd StudentTest
           mvn compile 
     '''
 		    }
@@ -15,7 +15,7 @@ pipeline{
 	    stage('QA test Stage'){
 			steps{
 					sh '''
-          cd StudentHandson
+          cd StudentTest
           mvn clean test package sonar:sonar
     '''
 				}
@@ -23,7 +23,7 @@ pipeline{
 		     stage('Junit test Stage'){
 			steps{
 				
-				junit 'StudentHandson/target/surefire-reports/*.xml'
+				junit 'StudentTest/target/surefire-reports/*.xml'
 		    }
 	    }
 	  stage('ansible-deploy'){
