@@ -1,0 +1,54 @@
+pipeline{
+    agent any
+	
+	stages{
+	  stage('Compile Stage'){
+			steps{
+				
+					sh '''
+          cd StudentTest
+          mvn compile 
+    '''
+		    }
+	    }
+	    
+	    stage('QA test Stage'){
+			steps{
+					sh '''
+          cd StudentTest
+          mvn clean test package sonar:sonar
+    '''
+				}
+		    }
+		     stage('Junit test Stage'){
+			steps{
+				
+				junit 'StudentTest/target/surefire-reports/*.xml'
+		    }
+	    }
+	    stage('upload war to nexus'){
+			steps{
+				
+				nexusArtifactUploader artifacts: [
+				[
+				artifactId: 'StudentTest', 
+				classifier: '', 
+				file: 'StudentTest/target/StudentTest-0.0.1-SNAPSHOT.war', 
+				type: 'war']
+				], 
+				credentialsId: 'nexus', 
+				groupId: 'st', 
+				nexusUrl: '192.168.56.108:8081', 
+				nexusVersion: 'nexus3', 
+				protocol: 'http', repository: 'student-sample', 
+				version: '1.0-SNAPSHOT'
+		    }
+	    }
+	  stage('ansible-deploy'){
+	      steps{
+	          echo "ansible"
+	      }
+	  }
+	    
+	}
+}
