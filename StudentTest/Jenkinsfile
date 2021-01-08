@@ -6,7 +6,7 @@ pipeline{
 			steps{
 				
 					sh '''
-          cd StudentTest
+          cd StudentHandson
           mvn compile 
     '''
 		    }
@@ -15,39 +15,26 @@ pipeline{
 	    stage('QA test Stage'){
 			steps{
 					sh '''
-          cd StudentTest
+          cd StudentHandson
           mvn clean test package sonar:sonar
     '''
 				}
 		    }
-		 stage('Junit test Stage'){
+		     stage('Junit test Stage'){
 			steps{
 				
-				junit 'StudentTest/target/surefire-reports/*.xml'
+				junit 'StudentHandson/target/surefire-reports/*.xml'
 		    }
 	    }
-	    stage('Uploding war to nexus'){
+	    stage('Junit test Stage'){
 			steps{
-				nexusArtifactUploader artifacts: [
-				[
-				  artifactId: 'StudentTest', 
-				  classifier: '', 
-				  file: 'StudentTest/target/StudentTest-0.0.1-SNAPSHOT.war', 
-				  type: 'war']
-				  ], 
-				  credentialsId: 'nexus', 
-				  groupId: 'st', 
-				  nexusUrl: '192.168.56.108:8081', 
-				  nexusVersion: 'nexus3', 
-				  protocol: 'http', 
-				  repository: 'http://192.168.56.108:8081/repository/student-sample/', 
-				  version: '0.0.1-SNAPSHOT'
 				
+				nexusArtifactUploader artifacts: [[artifactId: 'StudentTest', classifier: '', file: 'StudentTest/target/StudentTest-0.0.1-SNAPSHOT.war', type: 'war']], credentialsId: 'nexus', groupId: 'st', nexusUrl: '192.168.56.108:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'http://192.168.56.108:8081/repository/student-sample/', version: '0.0.1-SNAPSHOT'
 		    }
 	    }
-	   stage('ansible-deploy'){
+	  stage('ansible-deploy'){
 	      steps{
-	          //ansiblePlaybook credentialsId: 'ansible-privateKey', disableHostKeyChecking: true, installation: 'ansible', inventory: 'StudentTest/dev.inv', playbook: 'StudentTest/Test.yml'
+	          echo "ansible"
 	      }
 	  }
 	    
