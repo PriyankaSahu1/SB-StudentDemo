@@ -3,8 +3,7 @@
     gather_facts: true
     become: yes
     become_method: sudo
-    vars:
-     tomcat_port: 8282
+   
     tasks:
       - name : upadte source list
         command: apt-get update
@@ -33,7 +32,7 @@
         shell: nohup /usr/local/tomcat/bin/startup.sh &
       - name: Copy the war file
         copy:
-            src: /var/lib/jenkins/workspace/pipelineDemo1/StudentTest/target/StudentTest-0.0.1-SNAPSHOT.war
+            src: /var/lib/jenkins/workspace/pipelineDemo1/StudentTest/target/StudentTest-1.0-SNAPSHOT.war
             dest: /usr/local/tomcat/webapps/
       - name: Start Tomcat
         command: /usr/local/tomcat/bin/startup.sh
