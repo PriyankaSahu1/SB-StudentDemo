@@ -33,7 +33,7 @@ pipeline{
 				[
 				artifactId: 'StudentTest', 
 				classifier: '', 
-				file: 'StudentTest/target/StudentTest-0.0.1-SNAPSHOT.war', 
+				file: 'StudentTest/target/StudentTest-1.0-SNAPSHOT.war', 
 				type: 'war']
 				], 
 				credentialsId: 'nexus', 
