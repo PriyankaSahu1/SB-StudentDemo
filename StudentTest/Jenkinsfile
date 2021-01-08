@@ -20,13 +20,32 @@ pipeline{
     '''
 				}
 		    }
-		     stage('Junit test Stage'){
+		 stage('Junit test Stage'){
 			steps{
 				
 				junit 'StudentTest/target/surefire-reports/*.xml'
 		    }
 	    }
-	  stage('ansible-deploy'){
+	    stage('Uploding war to nexus'){
+			steps{
+				
+				nexusArtifactUploader artifacts:
+				 [
+				 [artifactId: 'StudentTest',
+				  classifier: '', 
+				  file: 'StudentTest/target/StudentTest-0.0.1-SNAPSHOT.war', 
+				  type: 'war']
+				  ], 
+				  credentialsId: 'nexus',
+				   groupId: 'st', 
+				   nexusUrl: '192.168.56.107:8081', 
+				   nexusVersion: 'nexus3', 
+				   protocol: 'http', 
+				   repository: 'http://192.168.56.107:8081/repository/StudentTest-snapshot/', 
+				   version: '0.0.1-SNAPSHOT'
+		    }
+	    }
+	   stage('ansible-deploy'){
 	      steps{
 	          ansiblePlaybook credentialsId: 'ansible-privateKey', disableHostKeyChecking: true, installation: 'ansible', inventory: 'StudentTest/dev.inv', playbook: 'StudentTest/Test.yml'
 	      }
