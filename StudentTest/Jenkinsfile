@@ -33,7 +33,7 @@ pipeline{
 				 [
 				 [artifactId: 'StudentTest',
 				  classifier: '', 
-				  file: 'StudentTest/target/StudentTest-0.0.1-SNAPSHOT.war', 
+				  file: 'StudentTest/target/StudentTest-0.0.1.war', 
 				  type: 'war']
 				  ], 
 				  credentialsId: 'nexus',
@@ -41,8 +41,8 @@ pipeline{
 				   nexusUrl: '192.168.56.107:8081', 
 				   nexusVersion: 'nexus3', 
 				   protocol: 'http', 
-				   repository: 'http://192.168.56.107:8081/repository/StudentTest-snapshot/', 
-				   version: '0.0.1-SNAPSHOT'
+				   repository: 'http://192.168.56.107:8081/repository/studentTest-release/', 
+				   version: '0.0.1'
 		    }
 	    }
 	   stage('ansible-deploy'){
